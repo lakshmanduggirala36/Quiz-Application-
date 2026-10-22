@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz Settings</title>
+
+<style>
+body{
+    margin:0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+    color:white;
+}
+
+.navbar{
+    display:flex;
+    justify-content:space-between;
+    padding:15px 40px;
+    background:rgba(0,0,0,0.2);
+}
+
+.navbar a{
+    color:white;
+    text-decoration:none;
+    margin-left:20px;
+    font-size:14px;
+}
+
+.container{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:80vh;
+}
+
+.card{
+    background: rgba(0,0,0,0.4);
+    padding:30px;
+    width:350px;
+    border-radius:15px;
+    box-shadow:0 5px 20px rgba(0,0,0,0.6);
+}
+
+.card h2{
+    text-align:center;
+    margin-bottom:10px;
+}
+
+label{
+    font-size:14px;
+}
+
+select, input[type="number"]{
+    width:100%;
+    padding:8px;
+    border-radius:10px;
+    border:none;
+    margin:10px 0 15px 0;
+    background:rgba(255,255,255,0.1);
+    color:white;
+}
+
+.radio-group{
+    margin:10px 0 15px 0;
+}
+
+.radio-group input{
+    margin-right:5px;
+}
+
+.checkbox{
+    margin-bottom:15px;
+}
+
+.btn{
+    width:100%;
+    padding:10px;
+    border:none;
+    border-radius:20px;
+    background: linear-gradient(90deg,#00f2fe,#4facfe);
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.btn:hover{
+    transform:scale(1.05);
+}
+
+.footer{
+    text-align:center;
+    font-size:13px;
+    opacity:0.7;
+    padding-bottom:15px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="navbar">
+    <div><strong>Smart Assessment</strong></div>
+    <div>
+        <a href="#">Categories</a>
+        <a href="#">Profile</a>
+        <a href="#">Logout</a>
+    </div>
+</div>
+
+<div class="container">
+
+<div class="card">
+<h2>Quiz Settings</h2>
+
+<form method="POST" action="{% url 'quiz_start' %}">
+{% csrf_token %}
+
+<!-- SUBJECT DROPDOWN -->
+<label>Select Subject</label>
+
+<select name="subject" required>
+
+<option value="">Choose Subject</option>
+
+{% for subject in subjects %}
+<option value="{{ subject.id }}">{{ subject.name }}</option>
+{% endfor %}
+
+</select>
+
+
+<label>Difficulty</label>
+
+<div class="radio-group">
+<input type="radio" name="difficulty" value="easy"> Easy
+<input type="radio" name="difficulty" value="medium"> Medium
+<input type="radio" name="difficulty" value="hard" checked> Hard
+</div>
+
+
+<label>Number of Questions</label>
+
+<input type="number" name="question_count" value="3" min="1" max="50">
+
+
+<div class="checkbox">
+<input type="checkbox" name="timer_enabled">
+<label>Enable Timer</label>
+</div>
+
+
+<button class="btn" type="submit">Start Quiz</button>
+
+
+{% if error %}
+<p style="color:red; text-align:center;">
+{{ error }}
+</p>
+{% endif %}
+
+</form>
+
+</div>
+</div>
+
+<div class="footer">
+© 2026 Smart Assessment & Question Generation System
+</div>
+
+</body>
+</html>

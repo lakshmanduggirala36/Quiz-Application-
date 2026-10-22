@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sub Categories</title>
+
+<style>
+body{
+    margin:0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+    color:white;
+}
+
+.navbar{
+    display:flex;
+    justify-content:space-between;
+    padding:15px 40px;
+    background:rgba(0,0,0,0.2);
+}
+
+.navbar a{
+    color:white;
+    text-decoration:none;
+    margin-left:20px;
+    font-size:14px;
+}
+
+.container{
+    text-align:center;
+    margin-top:80px;
+}
+
+.cards{
+    display:flex;
+    justify-content:center;
+    gap:40px;
+    margin-top:50px;
+    flex-wrap:wrap;
+}
+
+.card{
+    background: rgba(0,0,0,0.4);
+    padding:30px;
+    width:220px;
+    border-radius:15px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.5);
+}
+
+.btn{
+    margin-top:15px;
+    padding:8px 18px;
+    border:none;
+    border-radius:20px;
+    background: linear-gradient(90deg,#00f2fe,#4facfe);
+    color:white;
+    cursor:pointer;
+}
+
+.back-btn{
+    margin-top:30px;
+    padding:8px 15px;
+    background:gray;
+    border:none;
+    border-radius:10px;
+    color:white;
+    cursor:pointer;
+}
+
+.footer{
+    margin-top:100px;
+    text-align:center;
+    font-size:13px;
+    opacity:0.7;
+}
+</style>
+</head>
+
+<body>
+
+<div class="navbar">
+    <div><strong>Smart Assessment</strong></div>
+    <div>
+        <a href="categories.html">Home</a>
+        <a href="profile.html">Profile</a>
+        <a href="login.html">Logout</a>
+    </div>
+</div>
+
+<div class="container">
+
+    <!-- Dynamic Title -->
+    <h2 id="categoryTitle"></h2>
+
+    <div class="cards"></div>
+
+    <button class="back-btn" onclick="location.href='categories.html'">← Back</button>
+
+</div>
+
+<div class="footer">
+    © 2026 Smart Assessment & Question Generation System
+</div>
+
+<script>
+
+// Get selected category
+const category = localStorage.getItem("selectedCategory") || "Academic";
+
+// Set page title
+document.getElementById("categoryTitle").innerText = category;
+
+// Get cards container
+const cardsContainer = document.querySelector(".cards");
+
+// Academic
+if(category === "Academic"){
+    cardsContainer.innerHTML = `
+        <div class="card">
+            <h3>Physics</h3>
+            <button class="btn" onclick="startQuiz('Physics')">Start Quiz</button>
+        </div>
+        <div class="card">
+            <h3>Chemistry</h3>
+            <button class="btn" onclick="startQuiz('Chemistry')">Start Quiz</button>
+        </div>
+        <div class="card">
+            <h3>Mathematics</h3>
+            <button class="btn" onclick="startQuiz('Mathematics')">Start Quiz</button>
+        </div>
+    `;
+}
+
+// Entertainment
+else if(category === "Entertainment"){
+    cardsContainer.innerHTML = `
+        <div class="card">
+            <h3>Movies</h3>
+            <button class="btn" onclick="startQuiz('Movies')">Start Quiz</button>
+        </div>
+        <div class="card">
+            <h3>Music</h3>
+            <button class="btn" onclick="startQuiz('Music')">Start Quiz</button>
+        </div>
+        <div class="card">
+            <h3>Sports</h3>
+            <button class="btn" onclick="startQuiz('Sports')">Start Quiz</button>
+        </div>
+    `;
+}
+
+// General Knowledge
+else if(category === "General Knowledge"){
+    cardsContainer.innerHTML = `
+        <div class="card">
+            <h3>Current Affairs</h3>
+            <button class="btn" onclick="startQuiz('Current Affairs')">Start Quiz</button>
+        </div>
+        <div class="card">
+            <h3>History</h3>
+            <button class="btn" onclick="startQuiz('History')">Start Quiz</button>
+        </div>
+        <div class="card">
+            <h3>Geography</h3>
+            <button class="btn" onclick="startQuiz('Geography')">Start Quiz</button>
+        </div>
+    `;
+}
+
+// Start Quiz function
+function startQuiz(subject){
+    localStorage.setItem("selectedSubject", subject);
+    window.location.href = "quiz_settings.html";
+}
+
+</script>
+
+</body>
+</html>

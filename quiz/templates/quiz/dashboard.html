@@ -1,0 +1,157 @@
+<!DOCTYPE html><html>
+<head><title>Dashboard</title><script src="https://cdn.jsdelivr.net/npm/chart.js"></script><style>
+
+body{
+font-family:Arial;
+background:#0f172a;
+color:white;
+text-align:center;
+margin:0;
+padding:0;
+}
+
+.stats{
+display:flex;
+justify-content:center;
+flex-wrap:wrap;
+gap:20px;
+margin-top:20px;
+}
+
+.card{
+background:white;
+color:black;
+padding:20px;
+width:220px;
+border-radius:10px;
+box-shadow:0 4px 10px rgba(0,0,0,0.2);
+}
+
+button{
+padding:10px 20px;
+margin:10px;
+border:none;
+border-radius:5px;
+background:#3b82f6;
+color:white;
+cursor:pointer;
+font-size:16px;
+}
+
+button:hover{
+background:#2563eb;
+}
+
+table{
+margin:auto;
+margin-top:30px;
+width:80%;
+border-collapse:collapse;
+background:white;
+color:black;
+}
+
+th,td{
+padding:12px;
+border:1px solid #ddd;
+}
+
+th{
+background:#3b82f6;
+color:white;
+}
+
+.chart-box{
+width:80%;
+max-width:800px;
+margin:auto;
+background:white;
+padding:20px;
+border-radius:10px;
+margin-top:30px;
+}
+
+</style></head><body><h1>🎯 Quiz Dashboard</h1><h2>Welcome {{request.user.username}}</h2><div class="stats"><div class="card">
+<h3>Total Quizzes</h3>
+<p>{{total_quizzes}}</p>
+</div><div class="card">
+<h3>Average Score</h3>
+<p>{{avg_score}}%</p>
+</div><div class="card">
+<h3>Best Score</h3>
+<p>{{best_score}}%</p>
+</div></div>{% if latest %}
+
+<div class="card" style="margin:auto;margin-top:20px;width:300px;"><h3>Latest Result</h3>
+<p>{{latest.score}} / {{latest.total}}</p>
+<p>{{latest.percentage}}%</p></div>{% endif %}
+
+<br><a href="/quiz/settings/">
+<button>Start Quiz</button>
+</a><a href="/quiz/leaderboard/">
+<button>Leaderboard</button>
+</a><a href="/quiz/history/">
+<button>Quiz History</button>
+</a><a href="/quiz/profile/">
+<button>Profile</button>
+</a><a href="/quiz/categories/">
+<button>Categories</button>
+</a><h2>Recent Activity</h2><table><tr>
+<th>Subject</th>
+<th>Score</th>
+<th>Date</th>
+</tr>{% for r in recent_quizzes %}
+
+<tr>
+<td>{{r.quiz.subject}}</td>
+<td>{{r.score}} / {{r.total}}</td>
+<td>{{r.created_at}}</td>
+</tr>{% empty %}
+
+<tr>
+<td colspan="3">No quiz attempts yet</td>
+</tr>{% endfor %}
+
+</table><h2>Your Progress</h2><div class="chart-box">
+<canvas id="scoreChart"></canvas>
+</div><script>
+
+let labels = {{ chart_dates|safe }};
+let scores = {{ chart_scores|safe }};
+
+new Chart(document.getElementById("scoreChart"), {
+
+type: "line",
+
+data: {
+
+labels: labels,
+
+datasets: [{
+label: "Quiz Score %",
+data: scores,
+borderWidth: 3,
+fill: false
+}]
+
+},
+
+options:{
+responsive:true,
+plugins:{
+legend:{
+display:true
+}
+},
+scales:{
+y:{
+beginAtZero:true,
+max:100
+}
+}
+}
+
+});
+
+</script></body>
+</html>

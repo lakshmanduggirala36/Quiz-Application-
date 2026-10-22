@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Quiz</title>
+</head>
+<body>
+
+<h2>AI Quiz</h2>
+
+<form method="POST" action="{% url 'quiz_result' %}">
+    {% csrf_token %}
+
+    {% for q in questions %}
+        <div style="margin-bottom:20px;">
+            <h3>Q{{ forloop.counter }}: {{ q.question }}</h3>
+
+            {% for option in q.options %}
+                <label>
+                    <input type="radio"
+                           name="question_{{ forloop.parentloop.counter0 }}"
+                           value="{{ option }}"
+                           required>
+                    {{ option }}
+                </label>
+                <br>
+            {% endfor %}
+        </div>
+        <hr>
+    {% endfor %}
+
+    <button type="submit">Submit Quiz</button>
+</form>
+
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+    margin:0;
+    font-family:Arial, sans-serif;
+    min-height:100vh;
+    background:linear-gradient(135deg,#020617,#0f172a,#1e3a8a);
+    color:white;
+}
+
+/* Top bar */
+header{
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    background:#020617;
+    padding:14px 24px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    z-index:10;
+}
+
+header h3{
+    margin:0;
+    font-size:18px;
+    color:#38bdf8;
+}
+
+.nav a{
+    color:white;
+    text-decoration:none;
+    margin-left:18px;
+    font-size:15px;
+}
+
+/* Center area */
+.container{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:20px;
+}
+
+.card{
+    max-width:800px;
+    padding:40px 30px;
+}
+
+h2{
+    font-size:48px;
+    margin-bottom:15px;
+}
+
+.project-title{
+    font-size:60px;
+    font-weight:800;
+    color:#38bdf8;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h3>Smart Assessment & Question Generation System</h3>
+
+    <div class="nav">
+        <a href="login.html" id="loginLink">Login</a>
+        <a href="register.html" id="registerLink">Register</a>
+        <a href="profile.html" id="profileLink" style="display:none;">Profile</a>
+        <a href="categories.html">Categories</a>
+        <a href="sub_categories.html">Subcategories</a>
+        <a href="quiz_settings.html" id="quizLink">Quiz Setting</a>
+        <a href="#" id="logoutLink" style="display:none;">Logout</a>
+    </div>
+</header>
+
+<div class="container">
+    <div class="card">
+        <h2>Welcome</h2>
+        <h2 class="project-title">
+            Smart Assessment & Question Generation System
+        </h2>
+    </div>
+</div>
+
+<script>
+
+// Check login status
+if(localStorage.getItem("isLoggedIn") === "true") {
+    document.getElementById("loginLink").style.display = "none";
+    document.getElementById("registerLink").style.display = "none";
+    document.getElementById("profileLink").style.display = "inline";
+    document.getElementById("logoutLink").style.display = "inline";
+}
+
+// Protect Quiz Setting page
+document.getElementById("quizLink").addEventListener("click", function(event){
+    if(localStorage.getItem("isLoggedIn") !== "true"){
+        event.preventDefault();
+        alert("Please login first!");
+        window.location.href = "login.html";
+    }
+});
+
+// Logout
+document.getElementById("logoutLink").addEventListener("click", function(){
+    localStorage.removeItem("isLoggedIn");
+    window.location.href = "index.html";
+});
+
+</script>
+
+</body>
+</html>

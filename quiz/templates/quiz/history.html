@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Quiz History</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#0f172a;
+color:white;
+text-align:center;
+}
+
+table{
+margin:auto;
+margin-top:30px;
+width:80%;
+border-collapse:collapse;
+background:white;
+color:black;
+}
+
+th,td{
+padding:12px;
+border:1px solid #ddd;
+}
+
+th{
+background:#3b82f6;
+color:white;
+}
+
+form{
+margin-top:20px;
+}
+
+input,select{
+padding:8px;
+margin:5px;
+}
+
+.pagination{
+margin-top:20px;
+}
+
+a{
+color:#3b82f6;
+text-decoration:none;
+margin:5px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>📚 Your Quiz History</h1>
+
+<form method="get">
+
+<input type="text" name="search" placeholder="Search Subject" value="{{search}}">
+
+<select name="sort">
+<option value="">Sort By</option>
+<option value="date">Date</option>
+<option value="score">Score</option>
+</select>
+
+<button type="submit">Apply</button>
+
+</form>
+
+<table>
+
+<tr>
+<th>Subject</th>
+<th>Date</th>
+<th>Score</th>
+<th>Percentage</th>
+<th>Time Taken</th>
+</tr>
+
+{% for r in page_obj %}
+
+<tr>
+
+<td>{{r.quiz.subject}}</td>
+
+<td>{{r.created_at}}</td>
+
+<td>{{r.score}} / {{r.total}}</td>
+
+<td>{{r.percentage}}%</td>
+
+<td>{{r.time_taken}} sec</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+<div class="pagination">
+
+{% if page_obj.has_previous %}
+<a href="?page=1">First</a>
+<a href="?page={{page_obj.previous_page_number}}">Previous</a>
+{% endif %}
+
+Page {{page_obj.number}} of {{page_obj.paginator.num_pages}}
+
+{% if page_obj.has_next %}
+<a href="?page={{page_obj.next_page_number}}">Next</a>
+<a href="?page={{page_obj.paginator.num_pages}}">Last</a>
+{% endif %}
+
+</div>
+
+<br>
+
+<a href="/quiz/dashboard/">⬅ Back to Dashboard</a>
+
+</body>
+
+</html>

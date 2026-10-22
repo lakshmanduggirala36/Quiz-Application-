@@ -1,0 +1,206 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Quiz Started</title>
+
+<style>
+
+body{
+    font-family: Arial, sans-serif;
+    margin:40px;
+}
+
+/* TIMER */
+
+.timer-box{
+    text-align:right;
+    font-weight:bold;
+    font-size:18px;
+}
+
+/* PROGRESS BAR */
+
+.progress-container{
+    width:100%;
+    background:#ddd;
+    height:20px;
+    border-radius:10px;
+    margin-bottom:20px;
+}
+
+.progress-bar{
+    height:20px;
+    width:0%;
+    background:green;
+    border-radius:10px;
+    transition:width 0.3s;
+}
+
+/* QUESTIONS */
+
+.question-box{
+    margin-bottom:20px;
+}
+
+button{
+    padding:10px 20px;
+    font-size:16px;
+    cursor:pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h2>Quiz Started</h2>
+
+<!-- TIMER -->
+
+<div class="timer-box">
+Time Left: <span id="timer">{{ duration|default:60 }}</span> seconds
+</div>
+
+<br>
+
+<!-- PROGRESS BAR -->
+
+<div class="progress-container">
+<div class="progress-bar" id="progressBar"></div>
+</div>
+
+
+<form method="POST" action="{% url 'quiz_result' %}" id="quizForm">
+
+{% csrf_token %}
+
+
+{% for q in questions %}
+
+<div class="question-box">
+
+<p><strong>{{ forloop.counter }}. {{ q.question }}</strong></p>
+
+{% for option in q.options %}
+
+<label>
+<input type="radio"
+name="q{{ forloop.parentloop.counter0 }}"
+value="{{ option }}"
+required>
+
+{{ option }}
+
+</label><br>
+
+{% endfor %}
+
+<br>
+
+</div>
+
+<hr>
+
+{% endfor %}
+
+
+<button type="submit" id="submitBtn">Submit Quiz</button>
+
+</form>
+
+
+
+<script>
+
+/* ===============================
+TIMER FUNCTION
+================================ */
+
+let timeLeft = {{ duration|default:60 }};
+
+let timerDisplay = document.getElementById("timer");
+
+let form = document.getElementById("quizForm");
+
+let submitBtn = document.getElementById("submitBtn");
+
+let countdown = setInterval(function(){
+
+timeLeft--;
+
+timerDisplay.innerText = timeLeft;
+
+if(timeLeft <= 10){
+timerDisplay.style.color="red";
+}
+
+if(timeLeft <= 0){
+
+clearInterval(countdown);
+
+alert("Time's up! Submitting quiz.");
+
+submitBtn.disabled = true;
+
+form.submit();
+
+}
+
+},1000);
+
+
+
+/* ===============================
+PROGRESS BAR
+================================ */
+
+let totalQuestions = {{ questions|length }};
+
+let answeredQuestions = new Set();
+
+let progressBar = document.getElementById("progressBar");
+
+document.querySelectorAll("input[type=radio]").forEach(input => {
+
+input.addEventListener("change", function(){
+
+let questionName = this.name;
+
+answeredQuestions.add(questionName);
+
+let progressPercent = (answeredQuestions.size / totalQuestions) * 100;
+
+progressBar.style.width = progressPercent + "%";
+
+if(progressPercent >= 70){
+progressBar.style.background = "orange";
+}
+
+if(progressPercent >= 100){
+progressBar.style.background = "green";
+}
+
+});
+
+});
+
+
+
+/* ===============================
+PREVENT DOUBLE SUBMIT
+================================ */
+
+form.addEventListener("submit", function(){
+
+submitBtn.disabled = true;
+
+});
+
+</script>
+
+</body>
+</html>

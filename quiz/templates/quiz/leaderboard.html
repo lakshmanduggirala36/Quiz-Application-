@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Leaderboard</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#0f172a;
+color:white;
+text-align:center;
+}
+
+table{
+margin:auto;
+margin-top:40px;
+width:70%;
+border-collapse:collapse;
+background:white;
+color:black;
+}
+
+th,td{
+padding:12px;
+border:1px solid #ddd;
+}
+
+th{
+background:#3b82f6;
+color:white;
+}
+
+.me{
+background:#fde68a;
+font-weight:bold;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>🏆 Quiz Leaderboard</h1>
+
+<table>
+
+<tr>
+<th>Rank</th>
+<th>Name</th>
+<th>Score</th>
+<th>Percentage</th>
+</tr>
+
+{% for p in leaderboard %}
+
+<tr class="{% if p.is_me %}me{% endif %}">
+
+<td>
+
+{% if p.rank == 1 %}
+🥇
+{% elif p.rank == 2 %}
+🥈
+{% elif p.rank == 3 %}
+🥉
+{% else %}
+{{p.rank}}
+{% endif %}
+
+</td>
+
+<td>{{p.name}}</td>
+
+<td>{{p.score}}</td>
+
+<td>{{p.percentage}}%</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+<br>
+
+<a href="/quiz/dashboard/">⬅ Back to Dashboard</a>
+
+</body>
+</html>

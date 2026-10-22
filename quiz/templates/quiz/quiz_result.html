@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Quiz Result</title>
+
+<style>
+
+body{
+    font-family: Arial, sans-serif;
+    text-align:center;
+    margin-top:60px;
+}
+
+/* RESULT BOX */
+
+.result-box{
+    width:450px;
+    margin:auto;
+    padding:30px;
+    border-radius:10px;
+    box-shadow:0px 0px 10px #ccc;
+}
+
+/* PROGRESS BAR */
+
+.progress-container{
+    width:100%;
+    background:#ddd;
+    height:25px;
+    border-radius:10px;
+    margin-top:20px;
+}
+
+.progress-bar{
+    height:25px;
+    border-radius:10px;
+    text-align:center;
+    color:white;
+    line-height:25px;
+}
+
+/* PASS FAIL */
+
+.pass{
+    color:green;
+}
+
+.fail{
+    color:red;
+}
+
+/* BUTTON */
+
+a{
+    display:inline-block;
+    margin-top:20px;
+    padding:10px 20px;
+    background:black;
+    color:white;
+    text-decoration:none;
+    border-radius:5px;
+}
+
+a:hover{
+    background:#333;
+}
+
+/* LEADERBOARD */
+
+table{
+    margin:40px auto;
+    border-collapse:collapse;
+    width:400px;
+}
+
+th,td{
+    padding:10px;
+    border:1px solid #ccc;
+}
+
+th{
+    background:#f4f4f4;
+}
+
+</style>
+
+</head>
+
+<body>
+
+
+<div class="result-box">
+
+<h1>Your Score</h1>
+
+<h2>{{ score }} / {{ total }}</h2>
+
+<p><strong>Total Questions:</strong> {{ total }}</p>
+
+<p><strong>Percentage:</strong> {{ percentage }}%</p>
+
+
+<!-- PROGRESS BAR -->
+
+<div class="progress-container">
+
+<div class="progress-bar"
+
+style="width: {{ percentage }}%;
+background-color:{% if percentage >= 50 %}green{% else %}red{% endif %};">
+
+{{ percentage }}%
+
+</div>
+
+</div>
+
+
+<!-- PASS FAIL -->
+
+{% if percentage >= 50 %}
+
+<h3 class="pass">PASS 🎉</h3>
+
+{% else %}
+
+<h3 class="fail">FAIL ❌</h3>
+
+{% endif %}
+
+
+<!-- AI EXPLANATIONS -->
+
+{% if wrong_answers %}
+
+<hr>
+
+<h3>🧠 AI Explanations for Wrong Answers</h3>
+
+{% for item in wrong_answers %}
+
+<div style="border:1px solid #ccc; padding:10px; margin-bottom:10px; text-align:left;">
+
+<p><strong>Question:</strong> {{ item.question }}</p>
+
+<p><strong>Your Answer:</strong> {{ item.your_answer }}</p>
+
+<p><strong>Correct Answer:</strong> {{ item.correct_answer }}</p>
+
+<p><strong>Explanation:</strong> {{ item.explanation }}</p>
+
+</div>
+
+{% endfor %}
+
+{% endif %}
+
+
+<a href="{% url 'quiz_settings' %}">Try Again</a>
+
+</div>
+
+
+
+<!-- LEADERBOARD -->
+
+{% if results %}
+
+<h1>Leaderboard</h1>
+
+<table>
+
+<tr>
+<th>Player</th>
+<th>Score</th>
+</tr>
+
+{% for r in results %}
+
+<tr>
+
+<td>
+
+{% if r.player %}
+{{ r.player.name }}
+{% elif r.user %}
+{{ r.user.username }}
+{% else %}
+Unknown
+{% endif %}
+
+</td>
+
+<td>{{ r.score }}</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+{% endif %}
+
+
+</body>
+</html>
